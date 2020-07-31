@@ -3,9 +3,10 @@
     [style.height.px]="height" 
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"
-    (window:mouseup)="status = 0"
+    (mousedown)="setStatus($event, 2)"
+    (window:mouseup)="setStatus($event, 0)"
 >
-    <div class="resize-action" (mousedown)="status = 1"></div>
+    <div class="resize-action" (mousedown)="setStatus($event, 1)"></div>
     <span>{{width}}px</span>
     <span>{{height}}px</span>
     <span>({{left}}, {{top}})</span>

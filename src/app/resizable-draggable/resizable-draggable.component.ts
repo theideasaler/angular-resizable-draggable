@@ -35,6 +35,11 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
     this.boxSpec = {left, top, width, height};
   }
 
+  setStatus(event: MouseEvent, status: number){
+    if(status === 1) event.stopPropagation();
+    this.status = status;
+  }
+
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent){
     this.mouse = { x: event.clientX, y: event.clientY }
