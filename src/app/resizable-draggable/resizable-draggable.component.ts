@@ -17,12 +17,10 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
   @Input('left') public left: number;
   @Input('top') public top: number;
   @ViewChild("box") public box: ElementRef;
-  public active = false;
-  public boxSpec: { left: number, top: number, width: number, height: number };
+  private boxSpec: { left: number, top: number, width: number, height: number };
   public mouse: {x: number, y: number}
   public status: Status = Status.OFF;
-
-  constructor() { }
+  private mouseAndBoxDetails: {x: number, y: number, left: number, top: number}
 
   ngOnInit() {}
 
@@ -30,25 +28,32 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
     this.loadBox();
   }
 
-  loadBox(){
+  private loadBox(){
     const {left, top, width, height} = this.box.nativeElement.getBoundingClientRect();
     this.boxSpec = {left, top, width, height};
   }
 
   setStatus(event: MouseEvent, status: number){
     if(status === 1) event.stopPropagation();
+    else if(status === 2) this.mouseAndBoxDetails = { x: event.clientX, y: event.clientY, left: this.left, top: this.top};
     this.status = status;
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent){
-    this.mouse = { x: event.clientX, y: event.clientY }
+    this.mouse = { x: event.clientX, y: event.clientY };
 
     if(this.status === Status.RESIZE) this.resize();
+    else if(this.status === Status.MOVE) this.move();
   }
 
-  resize(){
+  private resize(){
     this.width = this.mouse.x - this.boxSpec.left;
     this.height = this.mouse.y - this.boxSpec.top;
+  }
+
+  private move(){
+    this.left = this.mouseAndBoxDetails.left + (this.mouse.x - this.mouseAndBoxDetails.x);
+    this.top = this.mouseAndBoxDetails.top + (this.mouse.y - this.mouseAndBoxDetails.y);
   }
 }
