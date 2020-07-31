@@ -17,25 +17,35 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
   @Input('left') public left: number;
   @Input('top') public top: number;
   @ViewChild("box") public box: ElementRef;
-  private absolutePos: { left: number, top: number };
+  private boxPosition: { left: number, top: number };
+  private containerPos: { left: number, top: number, right: number, bottom: number };
   public mouse: {x: number, y: number}
   public status: Status = Status.OFF;
-  private mouseClick: {x: number, y: number, boxLeft: number, boxTop: number}
+  private mouseClick: {x: number, y: number, left: number, top: number}
 
   ngOnInit() {}
 
   ngAfterViewInit(){
     this.loadBox();
+    this.loadContainer();
   }
 
   private loadBox(){
     const {left, top} = this.box.nativeElement.getBoundingClientRect();
-    this.absolutePos = {left, top};
+    this.boxPosition = {left, top};
+  }
+
+  private loadContainer(){
+    const left = this.boxPosition.left - this.left;
+    const top = this.boxPosition.top - this.top;
+    const right = left + 600;
+    const bottom = top + 450;
+    this.containerPos = { left, top, right, bottom };
   }
 
   setStatus(event: MouseEvent, status: number){
     if(status === 1) event.stopPropagation();
-    else if(status === 2) this.mouseClick = { x: event.clientX, y: event.clientY, boxLeft: this.left, boxTop: this.top };
+    else if(status === 2) this.mouseClick = { x: event.clientX, y: event.clientY, left: this.left, top: this.top };
     else this.loadBox();
     this.status = status;
   }
@@ -49,12 +59,33 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
   }
 
   private resize(){
-    this.width = this.mouse.x - this.absolutePos.left;
-    this.height = this.mouse.y - this.absolutePos.top;
+    if(this.resizeCondMeet()){
+      this.width = Number(this.mouse.x > this.boxPosition.left) ? this.mouse.x - this.boxPosition.left : 0;
+      this.height = Number(this.mouse.y > this.boxPosition.top) ? this.mouse.y - this.boxPosition.top : 0;
+    }
+  }
+
+  private resizeCondMeet(){
+    return (this.mouse.x < this.containerPos.right && this.mouse.y < this.containerPos.bottom);
   }
 
   private move(){
-    this.left = this.mouseClick.boxLeft + (this.mouse.x - this.mouseClick.x);
-    this.top = this.mouseClick.boxTop + (this.mouse.y - this.mouseClick.y);
+    if(this.moveCondMeet()){
+      this.left = this.mouseClick.left + (this.mouse.x - this.mouseClick.x);
+      this.top = this.mouseClick.top + (this.mouse.y - this.mouseClick.y);
+    }
+  }
+
+  private moveCondMeet(){
+    const offsetLeft = this.mouseClick.x - this.boxPosition.left; 
+    const offsetRight = this.width - offsetLeft; 
+    const offsetTop = this.mouseClick.y - this.boxPosition.top;
+    const offsetBottom = this.height - offsetTop;
+    return (
+      this.mouse.x > this.containerPos.left + offsetLeft && 
+      this.mouse.x < this.containerPos.right - offsetRight &&
+      this.mouse.y > this.containerPos.top + offsetTop &&
+      this.mouse.y < this.containerPos.bottom - offsetBottom
+      );
   }
 }
