@@ -3,6 +3,7 @@
     [style.height.px]="height" 
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"
+    (window:mouseup)="status = 0"
 >
-    <div class="resize-action" (mousedown)="status = 1" (mouseup)="status = 0"></div>
+    <div class="resize-action" (mousedown)="status = 1"></div>
 </div>
