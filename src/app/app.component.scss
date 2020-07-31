@@ -1,0 +1,9 @@
+.box-container {
+    position: absolute;
+    width: 600px;
+    height: 450px;
+    border: 1px solid black;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+}
