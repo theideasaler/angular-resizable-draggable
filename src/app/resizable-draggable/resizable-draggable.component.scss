@@ -4,7 +4,11 @@
         outline-style: solid;
         background-color: #80ff800d;
     }
-    
+
+    &:hover {
+        cursor: all-scroll;
+    }
+
     span:first-of-type {
         position: absolute;
         left: 50%;
