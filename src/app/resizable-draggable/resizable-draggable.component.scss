@@ -4,24 +4,21 @@
         outline-style: solid;
         background-color: #80ff800d;
     }
+    
     span:first-of-type {
         position: absolute;
-        top: -20px;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate3d(-50%, -100%, 0);
     }
 
     span:nth-of-type(2) {
         position: absolute;
         top: 50%;
-        left: -45px;
-        transform: translateY(-50%);
+        transform: translate3d(-100%, -50%, 0);
     }
     
     span:nth-of-type(3) {
         position: absolute;
-        top: 0;
-        left: 0;
         transform: translate3d(-100%, -100%, 0);
     }
 }
