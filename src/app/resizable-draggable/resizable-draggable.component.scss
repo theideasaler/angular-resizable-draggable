@@ -8,11 +8,12 @@
 
 .resize-action {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    left: 100%;
+    top: 100%;
+    transform: translate3d(-50%, -50%, 0) rotateZ(45deg);
     border-style: solid;
     border-width: 8px;
-    border-color: transparent #008000 #008000 transparent;
+    border-color: transparent transparent transparent #008000;
     &:hover, &:active {
         cursor: nwse-resize;
     }
