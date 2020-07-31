@@ -20,7 +20,7 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
   private absolutePos: { left: number, top: number };
   public mouse: {x: number, y: number}
   public status: Status = Status.OFF;
-  private mouseClick: {x: number, y: number, left: number, top: number}
+  private mouseClick: {x: number, y: number, boxLeft: number, boxTop: number}
 
   ngOnInit() {}
 
@@ -35,7 +35,7 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
 
   setStatus(event: MouseEvent, status: number){
     if(status === 1) event.stopPropagation();
-    else if(status === 2) this.mouseClick = { x: event.clientX, y: event.clientY, left: this.left, top: this.top };
+    else if(status === 2) this.mouseClick = { x: event.clientX, y: event.clientY, boxLeft: this.left, boxTop: this.top };
     else this.loadBox();
     this.status = status;
   }
@@ -54,7 +54,7 @@ export class ResizableDraggableComponent implements OnInit, AfterViewInit {
   }
 
   private move(){
-    this.left = this.mouseClick.left + (this.mouse.x - this.mouseClick.x);
-    this.top = this.mouseClick.top + (this.mouse.y - this.mouseClick.y);
+    this.left = this.mouseClick.boxLeft + (this.mouse.x - this.mouseClick.x);
+    this.top = this.mouseClick.boxTop + (this.mouse.y - this.mouseClick.y);
   }
 }
