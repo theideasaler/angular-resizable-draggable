@@ -6,4 +6,7 @@
     (window:mouseup)="status = 0"
 >
     <div class="resize-action" (mousedown)="status = 1"></div>
+    <span>{{width}}px</span>
+    <span>{{height}}px</span>
+    <span>({{left}}, {{top}})</span>
 </div>
