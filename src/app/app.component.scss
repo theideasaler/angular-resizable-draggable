@@ -2,8 +2,22 @@
     position: absolute;
     width: 600px;
     height: 450px;
-    border: 1px solid black;
+    outline: 1px solid black;
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
+
+    span:first-of-type {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    span:nth-of-type(2) {
+        position: absolute;
+        top: 50%;
+        left: -45px;
+        transform: translateY(-50%);
+    }
 }
